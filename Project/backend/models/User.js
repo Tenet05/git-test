@@ -1,20 +1,19 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
+
   name: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
 
   email: {
     type: String,
     required: true,
-    unique: true
-  },
-
-  phone: {
-    type: String,
-    required: true
+    unique: true,
+    lowercase: true,
+    trim: true
   },
 
   password: {
@@ -22,16 +21,18 @@ const userSchema = new mongoose.Schema({
     required: true
   },
 
-  role: {
+  phone: {
     type: String,
-    enum: ["admin", "builder", "customer"],
-    default: "customer"
+    required: true,
+    match: [/^[0-9]{10}$/, "Phone number must be 10 digits"]
   },
 
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
-});
+  role: {
+    type: String,
+    required: true,
+    enum: ["investor", "builder", "admin"]
+  },
+
+}, { timestamps: true });
 
 module.exports = mongoose.model("User", userSchema);
